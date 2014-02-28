@@ -118,9 +118,10 @@ class Response extends AbstractMessage implements ResponseInterface
         return $this->reasonPhrase;
     }
 
-    public function json()
+    public function json($options = array())
     {
-        $data = json_decode((string) $this->getBody(), true);
+        $objectsAsArray = isset($options['objectsAsArrays']) ? true : (boolean) $options['objectsAsArrays'];
+        $data = json_decode((string) $this->getBody(), $objectsAsArrays);
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new ParseException(
                 'Unable to parse response body into JSON: ' . json_last_error(),
